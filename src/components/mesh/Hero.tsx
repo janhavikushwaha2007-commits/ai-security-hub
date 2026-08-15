@@ -1,4 +1,6 @@
 import { ArrowRight, Sparkles } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+
 import { MeshButton } from "./MeshButton";
 import { Reveal } from "./Reveal";
 import heroMesh from "@/assets/hero-mesh.png";
