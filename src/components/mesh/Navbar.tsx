@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, ShieldHalf, X } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { MeshButton } from "./MeshButton";
 import { navLinks } from "./landing-data";
 import { cn } from "@/lib/utils";
@@ -54,7 +55,9 @@ export function Navbar() {
           <MeshButton variant="ghost" size="sm">
             Login
           </MeshButton>
-          <MeshButton size="sm">Get Started</MeshButton>
+          <MeshButton asChild size="sm">
+            <Link to="/dashboard">Get Started</Link>
+          </MeshButton>
         </div>
 
         <button
@@ -86,8 +89,10 @@ export function Navbar() {
               <MeshButton variant="outline" size="sm" className="flex-1">
                 Login
               </MeshButton>
-              <MeshButton size="sm" className="flex-1">
-                Get Started
+              <MeshButton asChild size="sm" className="flex-1">
+                <Link to="/dashboard" onClick={() => setOpen(false)}>
+                  Get Started
+                </Link>
               </MeshButton>
             </li>
           </ul>
