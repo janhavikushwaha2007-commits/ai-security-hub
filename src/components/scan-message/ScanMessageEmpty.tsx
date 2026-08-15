@@ -1,0 +1,28 @@
+import { MessageSquareWarning, ScanLine } from "lucide-react";
+
+export function ScanMessageEmpty() {
+  return (
+    <section
+      aria-labelledby="empty-state-heading"
+      className="surface-card flex flex-col items-center justify-center p-8 text-center sm:p-12"
+    >
+      <span className="grid size-16 place-items-center rounded-2xl border border-border bg-surface/70 shadow-[var(--shadow-soft)]">
+        <MessageSquareWarning className="size-7 text-muted-foreground" aria-hidden="true" />
+      </span>
+      <h2
+        id="empty-state-heading"
+        className="mt-5 text-lg font-semibold text-foreground sm:text-xl"
+      >
+        No message analyzed yet
+      </h2>
+      <p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
+        Paste a suspicious SMS, email, or chat message above and click{" "}
+        <span className="inline-flex items-center gap-1 font-medium text-accent">
+          <ScanLine className="size-3.5" aria-hidden="true" />
+          Analyze Message
+        </span>{" "}
+        to see a demo result.
+      </p>
+    </section>
+  );
+}
