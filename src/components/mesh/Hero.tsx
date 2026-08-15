@@ -1,4 +1,6 @@
 import { ArrowRight, Sparkles } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+
 import { MeshButton } from "./MeshButton";
 import { Reveal } from "./Reveal";
 import heroMesh from "@/assets/hero-mesh.png";
@@ -49,10 +51,13 @@ export function Hero() {
 
           <Reveal delay={240}>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <MeshButton size="lg">
-                Get Started
-                <ArrowRight aria-hidden="true" />
+              <MeshButton asChild size="lg">
+                <Link to="/dashboard">
+                  Get Started
+                  <ArrowRight aria-hidden="true" />
+                </Link>
               </MeshButton>
+
               <MeshButton asChild variant="outline" size="lg">
                 <a href="#features">Explore Features</a>
               </MeshButton>
