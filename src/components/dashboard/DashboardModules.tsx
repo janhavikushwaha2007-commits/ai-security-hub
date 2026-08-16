@@ -47,9 +47,15 @@ export function DashboardModules() {
                 >
                   {mod.status}
                 </span>
-                <MeshButton variant="outline" size="sm">
-                  {mod.action}
-                </MeshButton>
+                {mod.title === "Scam Message Detection" ? (
+                  <MeshButton variant="outline" size="sm" asChild>
+                    <Link to="/scan-message">{mod.action}</Link>
+                  </MeshButton>
+                ) : (
+                  <MeshButton variant="outline" size="sm">
+                    {mod.action}
+                  </MeshButton>
+                )}
               </div>
             </article>
           </Reveal>
