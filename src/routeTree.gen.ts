@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ScanMessageRouteImport } from './routes/scan-message'
+import { Route as ScanUrlRouteImport } from './routes/scan-url'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const ScanMessageRoute = ScanMessageRouteImport.update({
   path: '/scan-message',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScanUrlRoute = ScanUrlRouteImport.update({
+  id: '/scan-url',
+  path: '/scan-url',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
   '/scan-message': typeof ScanMessageRoute
+  '/scan-url': typeof ScanUrlRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
   '/scan-message': typeof ScanMessageRoute
+  '/scan-url': typeof ScanUrlRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
   '/scan-message': typeof ScanMessageRoute
+  '/scan-url': typeof ScanUrlRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/scan-message'
+  fullPaths: '/' | '/dashboard' | '/scan-message' | '/scan-url'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/scan-message'
-  id: '__root__' | '/' | '/dashboard' | '/scan-message'
+  to: '/' | '/dashboard' | '/scan-message' | '/scan-url'
+  id: '__root__' | '/' | '/dashboard' | '/scan-message' | '/scan-url'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
   ScanMessageRoute: typeof ScanMessageRoute
+  ScanUrlRoute: typeof ScanUrlRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScanMessageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scan-url': {
+      id: '/scan-url'
+      path: '/scan-url'
+      fullPath: '/scan-url'
+      preLoaderRoute: typeof ScanUrlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
   ScanMessageRoute: ScanMessageRoute,
+  ScanUrlRoute: ScanUrlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
