@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/mesh/Reveal";
 import { MeshButton } from "@/components/mesh/MeshButton";
 import { quickActions } from "./dashboard-data";
