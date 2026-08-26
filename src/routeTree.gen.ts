@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ScanFileRouteImport } from './routes/scan-file'
 import { Route as ScanMessageRouteImport } from './routes/scan-message'
 import { Route as ScanUrlRouteImport } from './routes/scan-url'
 
@@ -22,6 +23,11 @@ const IndexRoute = IndexRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScanFileRoute = ScanFileRouteImport.update({
+  id: '/scan-file',
+  path: '/scan-file',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ScanMessageRoute = ScanMessageRouteImport.update({
@@ -38,12 +44,14 @@ const ScanUrlRoute = ScanUrlRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/scan-file': typeof ScanFileRoute
   '/scan-message': typeof ScanMessageRoute
   '/scan-url': typeof ScanUrlRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/scan-file': typeof ScanFileRoute
   '/scan-message': typeof ScanMessageRoute
   '/scan-url': typeof ScanUrlRoute
 }
@@ -51,20 +59,28 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/scan-file': typeof ScanFileRoute
   '/scan-message': typeof ScanMessageRoute
   '/scan-url': typeof ScanUrlRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/scan-message' | '/scan-url'
+  fullPaths: '/' | '/dashboard' | '/scan-file' | '/scan-message' | '/scan-url'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/scan-message' | '/scan-url'
-  id: '__root__' | '/' | '/dashboard' | '/scan-message' | '/scan-url'
+  to: '/' | '/dashboard' | '/scan-file' | '/scan-message' | '/scan-url'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/scan-file'
+    | '/scan-message'
+    | '/scan-url'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
+  ScanFileRoute: typeof ScanFileRoute
   ScanMessageRoute: typeof ScanMessageRoute
   ScanUrlRoute: typeof ScanUrlRoute
 }
@@ -83,6 +99,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scan-file': {
+      id: '/scan-file'
+      path: '/scan-file'
+      fullPath: '/scan-file'
+      preLoaderRoute: typeof ScanFileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/scan-message': {
@@ -105,6 +128,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
+  ScanFileRoute: ScanFileRoute,
   ScanMessageRoute: ScanMessageRoute,
   ScanUrlRoute: ScanUrlRoute,
 }
