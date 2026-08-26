@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as PasswordCheckRouteImport } from './routes/password-check'
 import { Route as ScanFileRouteImport } from './routes/scan-file'
 import { Route as ScanMessageRouteImport } from './routes/scan-message'
 import { Route as ScanUrlRouteImport } from './routes/scan-url'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PasswordCheckRoute = PasswordCheckRouteImport.update({
+  id: '/password-check',
+  path: '/password-check',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ScanFileRoute = ScanFileRouteImport.update({
@@ -44,6 +50,7 @@ const ScanUrlRoute = ScanUrlRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/password-check': typeof PasswordCheckRoute
   '/scan-file': typeof ScanFileRoute
   '/scan-message': typeof ScanMessageRoute
   '/scan-url': typeof ScanUrlRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/password-check': typeof PasswordCheckRoute
   '/scan-file': typeof ScanFileRoute
   '/scan-message': typeof ScanMessageRoute
   '/scan-url': typeof ScanUrlRoute
@@ -59,19 +67,33 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/password-check': typeof PasswordCheckRoute
   '/scan-file': typeof ScanFileRoute
   '/scan-message': typeof ScanMessageRoute
   '/scan-url': typeof ScanUrlRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/scan-file' | '/scan-message' | '/scan-url'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/password-check'
+    | '/scan-file'
+    | '/scan-message'
+    | '/scan-url'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/scan-file' | '/scan-message' | '/scan-url'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/password-check'
+    | '/scan-file'
+    | '/scan-message'
+    | '/scan-url'
   id:
     | '__root__'
     | '/'
     | '/dashboard'
+    | '/password-check'
     | '/scan-file'
     | '/scan-message'
     | '/scan-url'
@@ -80,6 +102,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
+  PasswordCheckRoute: typeof PasswordCheckRoute
   ScanFileRoute: typeof ScanFileRoute
   ScanMessageRoute: typeof ScanMessageRoute
   ScanUrlRoute: typeof ScanUrlRoute
@@ -99,6 +122,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/password-check': {
+      id: '/password-check'
+      path: '/password-check'
+      fullPath: '/password-check'
+      preLoaderRoute: typeof PasswordCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/scan-file': {
@@ -128,6 +158,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
+  PasswordCheckRoute: PasswordCheckRoute,
   ScanFileRoute: ScanFileRoute,
   ScanMessageRoute: ScanMessageRoute,
   ScanUrlRoute: ScanUrlRoute,
