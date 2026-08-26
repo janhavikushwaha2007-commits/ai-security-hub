@@ -197,7 +197,7 @@ export function ScanFileUploader({
 
         {isAnalyzing ? (
           <div className="mt-5 overflow-hidden rounded-full bg-surface/70">
-            <div className="h-1.5 w-1/3 animate-[shimmer-slide_1.2s_ease-in-out_infinite] rounded-full bg-[image:var(--gradient-brand)]" />
+            <div className="animate-scan-sweep h-1.5 w-1/3 rounded-full bg-[image:var(--gradient-brand)]" />
           </div>
         ) : null}
 
