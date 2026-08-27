@@ -59,8 +59,11 @@ export function DashboardModules() {
                   <MeshButton variant="outline" size="sm" asChild>
                     <Link to="/scan-file">{mod.action}</Link>
                   </MeshButton>
+                ) : mod.title === "Password Strength Checker" ? (
+                  <MeshButton variant="outline" size="sm" asChild>
+                    <Link to="/password-check">{mod.action}</Link>
+                  </MeshButton>
                 ) : (
-
                   <MeshButton variant="outline" size="sm">
                     {mod.action}
                   </MeshButton>
