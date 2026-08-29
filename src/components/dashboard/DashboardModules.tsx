@@ -63,6 +63,10 @@ export function DashboardModules() {
                   <MeshButton variant="outline" size="sm" asChild>
                     <Link to="/password-check">{mod.action}</Link>
                   </MeshButton>
+                ) : mod.title === "Secure Cloud Storage" ? (
+                  <MeshButton variant="outline" size="sm" asChild>
+                    <Link to="/secure-storage">{mod.action}</Link>
+                  </MeshButton>
                 ) : (
                   <MeshButton variant="outline" size="sm">
                     {mod.action}

@@ -3,6 +3,7 @@ import {
   Globe2,
   FileSearch2,
   KeyRound,
+  CloudUpload,
   ShieldCheck,
   AlertTriangle,
   ScanLine,
@@ -91,6 +92,13 @@ export const dashboardModules: DashboardModule[] = [
     action: "Check Now",
     icon: KeyRound,
   },
+  {
+    title: "Secure Cloud Storage",
+    description: "Keep sensitive documents in a protected vault with a security status per file.",
+    status: "Preview",
+    action: "Open Vault",
+    icon: CloudUpload,
+  },
 ];
 
 export interface ActivityItem {
@@ -150,4 +158,5 @@ export const quickActions = [
   { label: "Check Website", icon: Globe2 },
   { label: "Scan File", icon: FileSearch2 },
   { label: "Check Password", icon: KeyRound },
+  { label: "Secure Storage", icon: CloudUpload },
 ];

@@ -43,6 +43,13 @@ export function QuickActions() {
                   {action.label}
                 </Link>
               </MeshButton>
+            ) : action.label === "Secure Storage" ? (
+              <MeshButton key={action.label} size="lg" className="w-full justify-start" asChild>
+                <Link to="/secure-storage">
+                  <action.icon aria-hidden="true" />
+                  {action.label}
+                </Link>
+              </MeshButton>
             ) : (
               <MeshButton key={action.label} size="lg" className="w-full justify-start">
                 <action.icon aria-hidden="true" />

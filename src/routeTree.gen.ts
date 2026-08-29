@@ -15,6 +15,7 @@ import { Route as PasswordCheckRouteImport } from './routes/password-check'
 import { Route as ScanFileRouteImport } from './routes/scan-file'
 import { Route as ScanMessageRouteImport } from './routes/scan-message'
 import { Route as ScanUrlRouteImport } from './routes/scan-url'
+import { Route as SecureStorageRouteImport } from './routes/secure-storage'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const ScanUrlRoute = ScanUrlRouteImport.update({
   path: '/scan-url',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SecureStorageRoute = SecureStorageRouteImport.update({
+  id: '/secure-storage',
+  path: '/secure-storage',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/scan-file': typeof ScanFileRoute
   '/scan-message': typeof ScanMessageRoute
   '/scan-url': typeof ScanUrlRoute
+  '/secure-storage': typeof SecureStorageRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/scan-file': typeof ScanFileRoute
   '/scan-message': typeof ScanMessageRoute
   '/scan-url': typeof ScanUrlRoute
+  '/secure-storage': typeof SecureStorageRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/scan-file': typeof ScanFileRoute
   '/scan-message': typeof ScanMessageRoute
   '/scan-url': typeof ScanUrlRoute
+  '/secure-storage': typeof SecureStorageRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +90,7 @@ export interface FileRouteTypes {
     | '/scan-file'
     | '/scan-message'
     | '/scan-url'
+    | '/secure-storage'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/scan-file'
     | '/scan-message'
     | '/scan-url'
+    | '/secure-storage'
   id:
     | '__root__'
     | '/'
@@ -97,6 +108,7 @@ export interface FileRouteTypes {
     | '/scan-file'
     | '/scan-message'
     | '/scan-url'
+    | '/secure-storage'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,6 +118,7 @@ export interface RootRouteChildren {
   ScanFileRoute: typeof ScanFileRoute
   ScanMessageRoute: typeof ScanMessageRoute
   ScanUrlRoute: typeof ScanUrlRoute
+  SecureStorageRoute: typeof SecureStorageRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -152,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScanUrlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/secure-storage': {
+      id: '/secure-storage'
+      path: '/secure-storage'
+      fullPath: '/secure-storage'
+      preLoaderRoute: typeof SecureStorageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -162,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScanFileRoute: ScanFileRoute,
   ScanMessageRoute: ScanMessageRoute,
   ScanUrlRoute: ScanUrlRoute,
+  SecureStorageRoute: SecureStorageRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
