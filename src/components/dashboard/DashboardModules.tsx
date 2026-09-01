@@ -53,7 +53,7 @@ export function DashboardModules() {
                   </MeshButton>
                 ) : mod.title === "Fake Website Detection" ? (
                   <MeshButton variant="outline" size="sm" asChild>
-                    <Link to="/scan-url">{mod.action}</Link>
+                    <Link to="/fake-website">{mod.action}</Link>
                   </MeshButton>
                 ) : mod.title === "Malicious File Detection" ? (
                   <MeshButton variant="outline" size="sm" asChild>

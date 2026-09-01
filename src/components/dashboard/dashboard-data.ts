@@ -74,7 +74,7 @@ export const dashboardModules: DashboardModule[] = [
   {
     title: "Fake Website Detection",
     description: "Compare page structure and reputation signals against legitimate sources.",
-    status: "Preview",
+    status: "Ready",
     action: "Check Now",
     icon: Globe2,
   },
@@ -159,4 +159,5 @@ export const quickActions = [
   { label: "Scan File", icon: FileSearch2 },
   { label: "Check Password", icon: KeyRound },
   { label: "Secure Storage", icon: CloudUpload },
+  { label: "Check Now", icon: ShieldCheck },
 ];
