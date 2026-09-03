@@ -4,6 +4,7 @@ import {
   FileSearch2,
   KeyRound,
   CloudUpload,
+  ImageUp,
   ShieldCheck,
   AlertTriangle,
   ScanLine,
@@ -166,5 +167,6 @@ export const quickActions = [
   { label: "Scan File", icon: FileSearch2 },
   { label: "Check Password", icon: KeyRound },
   { label: "Secure Storage", icon: CloudUpload },
+  { label: "Scan Screenshot", icon: ImageUp },
   { label: "Check Now", icon: ShieldCheck },
 ];
