@@ -93,6 +93,13 @@ export const dashboardModules: DashboardModule[] = [
     icon: KeyRound,
   },
   {
+    title: "Screenshot Analysis",
+    description: "Review a screenshot of a suspicious message or login page for phishing signals.",
+    status: "Ready",
+    action: "Open Analyzer",
+    icon: ImageUp,
+  },
+  {
     title: "Secure Cloud Storage",
     description: "Keep sensitive documents in a protected vault with a security status per file.",
     status: "Preview",

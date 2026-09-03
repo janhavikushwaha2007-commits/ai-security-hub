@@ -15,6 +15,7 @@ import { Route as FakeWebsiteRouteImport } from './routes/fake-website'
 import { Route as PasswordCheckRouteImport } from './routes/password-check'
 import { Route as ScanFileRouteImport } from './routes/scan-file'
 import { Route as ScanMessageRouteImport } from './routes/scan-message'
+import { Route as ScanScreenshotRouteImport } from './routes/scan-screenshot'
 import { Route as ScanUrlRouteImport } from './routes/scan-url'
 import { Route as SecureStorageRouteImport } from './routes/secure-storage'
 
@@ -48,6 +49,11 @@ const ScanMessageRoute = ScanMessageRouteImport.update({
   path: '/scan-message',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScanScreenshotRoute = ScanScreenshotRouteImport.update({
+  id: '/scan-screenshot',
+  path: '/scan-screenshot',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScanUrlRoute = ScanUrlRouteImport.update({
   id: '/scan-url',
   path: '/scan-url',
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/password-check': typeof PasswordCheckRoute
   '/scan-file': typeof ScanFileRoute
   '/scan-message': typeof ScanMessageRoute
+  '/scan-screenshot': typeof ScanScreenshotRoute
   '/scan-url': typeof ScanUrlRoute
   '/secure-storage': typeof SecureStorageRoute
 }
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/password-check': typeof PasswordCheckRoute
   '/scan-file': typeof ScanFileRoute
   '/scan-message': typeof ScanMessageRoute
+  '/scan-screenshot': typeof ScanScreenshotRoute
   '/scan-url': typeof ScanUrlRoute
   '/secure-storage': typeof SecureStorageRoute
 }
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/password-check': typeof PasswordCheckRoute
   '/scan-file': typeof ScanFileRoute
   '/scan-message': typeof ScanMessageRoute
+  '/scan-screenshot': typeof ScanScreenshotRoute
   '/scan-url': typeof ScanUrlRoute
   '/secure-storage': typeof SecureStorageRoute
 }
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/password-check'
     | '/scan-file'
     | '/scan-message'
+    | '/scan-screenshot'
     | '/scan-url'
     | '/secure-storage'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/password-check'
     | '/scan-file'
     | '/scan-message'
+    | '/scan-screenshot'
     | '/scan-url'
     | '/secure-storage'
   id:
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/password-check'
     | '/scan-file'
     | '/scan-message'
+    | '/scan-screenshot'
     | '/scan-url'
     | '/secure-storage'
   fileRoutesById: FileRoutesById
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   PasswordCheckRoute: typeof PasswordCheckRoute
   ScanFileRoute: typeof ScanFileRoute
   ScanMessageRoute: typeof ScanMessageRoute
+  ScanScreenshotRoute: typeof ScanScreenshotRoute
   ScanUrlRoute: typeof ScanUrlRoute
   SecureStorageRoute: typeof SecureStorageRoute
 }
@@ -178,6 +191,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScanMessageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scan-screenshot': {
+      id: '/scan-screenshot'
+      path: '/scan-screenshot'
+      fullPath: '/scan-screenshot'
+      preLoaderRoute: typeof ScanScreenshotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scan-url': {
       id: '/scan-url'
       path: '/scan-url'
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   PasswordCheckRoute: PasswordCheckRoute,
   ScanFileRoute: ScanFileRoute,
   ScanMessageRoute: ScanMessageRoute,
+  ScanScreenshotRoute: ScanScreenshotRoute,
   ScanUrlRoute: ScanUrlRoute,
   SecureStorageRoute: SecureStorageRoute,
 }
