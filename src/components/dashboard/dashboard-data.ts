@@ -6,6 +6,7 @@ import {
   CloudUpload,
   ImageUp,
   ShieldCheck,
+  LayoutGrid,
   AlertTriangle,
   ScanLine,
   Clock3,
@@ -162,6 +163,7 @@ export const threatBreakdown: ThreatSlice[] = [
 ];
 
 export const quickActions = [
+  { label: "Scan Center", icon: LayoutGrid },
   { label: "Scan Message", icon: MessageSquareWarning },
   { label: "Check Website", icon: Globe2 },
   { label: "Scan File", icon: FileSearch2 },
