@@ -15,7 +15,14 @@ export function QuickActions() {
       <Reveal delay={80} className="mt-6">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {quickActions.map((action) =>
-            action.label === "Scan Message" ? (
+            action.label === "Scan Center" ? (
+              <MeshButton key={action.label} size="lg" className="w-full justify-start" asChild>
+                <Link to="/scan-center">
+                  <action.icon aria-hidden="true" />
+                  {action.label}
+                </Link>
+              </MeshButton>
+            ) : action.label === "Scan Message" ? (
               <MeshButton key={action.label} size="lg" className="w-full justify-start" asChild>
                 <Link to="/scan-message">
                   <action.icon aria-hidden="true" />
