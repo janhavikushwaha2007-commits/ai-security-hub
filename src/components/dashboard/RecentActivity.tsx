@@ -1,3 +1,5 @@
+import { Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/mesh/Reveal";
 import { recentActivity } from "./dashboard-data";
 import { cn } from "@/lib/utils";
@@ -22,9 +24,18 @@ export function RecentActivity() {
           <h2 id="activity-heading" className="text-xl font-semibold sm:text-2xl">
             Recent Activity
           </h2>
-          <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-            Demo activity
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+              Demo activity
+            </span>
+            <Link
+              to="/scan-history"
+              className="press-3d inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface/70 px-3 py-1.5 text-xs font-medium text-foreground shadow-[var(--shadow-soft)] transition-colors hover:border-accent/50 hover:text-accent"
+            >
+              View All History
+              <ArrowRight className="size-3.5" aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </Reveal>
 
