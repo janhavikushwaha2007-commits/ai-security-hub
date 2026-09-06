@@ -20,6 +20,7 @@ import { Route as ScanMessageRouteImport } from './routes/scan-message'
 import { Route as ScanScreenshotRouteImport } from './routes/scan-screenshot'
 import { Route as ScanUrlRouteImport } from './routes/scan-url'
 import { Route as SecureStorageRouteImport } from './routes/secure-storage'
+import { Route as SecurityScoreRouteImport } from './routes/security-score'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -76,6 +77,11 @@ const SecureStorageRoute = SecureStorageRouteImport.update({
   path: '/secure-storage',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SecurityScoreRoute = SecurityScoreRouteImport.update({
+  id: '/security-score',
+  path: '/security-score',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/scan-screenshot': typeof ScanScreenshotRoute
   '/scan-url': typeof ScanUrlRoute
   '/secure-storage': typeof SecureStorageRoute
+  '/security-score': typeof SecurityScoreRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/scan-screenshot': typeof ScanScreenshotRoute
   '/scan-url': typeof ScanUrlRoute
   '/secure-storage': typeof SecureStorageRoute
+  '/security-score': typeof SecurityScoreRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/scan-screenshot': typeof ScanScreenshotRoute
   '/scan-url': typeof ScanUrlRoute
   '/secure-storage': typeof SecureStorageRoute
+  '/security-score': typeof SecurityScoreRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/scan-screenshot'
     | '/scan-url'
     | '/secure-storage'
+    | '/security-score'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/scan-screenshot'
     | '/scan-url'
     | '/secure-storage'
+    | '/security-score'
   id:
     | '__root__'
     | '/'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/scan-screenshot'
     | '/scan-url'
     | '/secure-storage'
+    | '/security-score'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -171,6 +183,7 @@ export interface RootRouteChildren {
   ScanScreenshotRoute: typeof ScanScreenshotRoute
   ScanUrlRoute: typeof ScanUrlRoute
   SecureStorageRoute: typeof SecureStorageRoute
+  SecurityScoreRoute: typeof SecurityScoreRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -252,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SecureStorageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/security-score': {
+      id: '/security-score'
+      path: '/security-score'
+      fullPath: '/security-score'
+      preLoaderRoute: typeof SecurityScoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -267,6 +287,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScanScreenshotRoute: ScanScreenshotRoute,
   ScanUrlRoute: ScanUrlRoute,
   SecureStorageRoute: SecureStorageRoute,
+  SecurityScoreRoute: SecurityScoreRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
