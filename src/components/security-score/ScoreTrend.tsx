@@ -6,7 +6,7 @@ export function ScoreTrend() {
   const min = Math.min(...scores) - 6;
   const max = Math.max(...scores) + 4;
   const range = Math.max(max - min, 1);
-  const change = scores[scores.length - 1] - scores[0];
+  const change = (scores[scores.length - 1] ?? 0) - (scores[0] ?? 0);
 
   return (
     <Reveal>
