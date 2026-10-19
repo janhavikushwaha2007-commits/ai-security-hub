@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/mesh/Reveal";
 import { overviewStats } from "./dashboard-data";
 import { cn } from "@/lib/utils";
@@ -26,19 +27,35 @@ export function SecurityOverview() {
       <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {overviewStats.map((stat, i) => (
           <Reveal key={stat.label} delay={i * 70}>
-            <article className="surface-card lift-hover h-full p-5">
-              <div className="flex items-start justify-between gap-3">
-                <p className="text-sm text-muted-foreground">{stat.label}</p>
-                <stat.icon
-                  className={cn("size-5 shrink-0", toneClass[stat.tone])}
-                  aria-hidden="true"
-                />
-              </div>
-              <p className="mt-4 font-display text-3xl font-semibold tracking-tight">
-                {stat.value}
-              </p>
-              <p className="mt-2 text-xs text-muted-foreground">{stat.hint}</p>
-            </article>
+            {(() => {
+              const content = (
+                <>
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="text-sm text-muted-foreground">{stat.label}</p>
+                    <stat.icon
+                      className={cn("size-5 shrink-0", toneClass[stat.tone])}
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <p className="mt-4 font-display text-3xl font-semibold tracking-tight">
+                    {stat.value}
+                  </p>
+                  <p className="mt-2 text-xs text-muted-foreground">{stat.hint}</p>
+                </>
+              );
+
+              return stat.label === "Overall Security Score" ? (
+                <Link
+                  to="/security-score"
+                  aria-label="View Security Score details"
+                  className="surface-card lift-hover block h-full p-5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  {content}
+                </Link>
+              ) : (
+                <article className="surface-card lift-hover h-full p-5">{content}</article>
+              );
+            })()}
           </Reveal>
         ))}
       </div>
