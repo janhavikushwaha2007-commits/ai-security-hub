@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep feature-specific Reports & Alerts demo data and UI isolated under `src/components/reports-alerts/`, composed by a thin route, so preview behavior stays separate from other modules.

@@ -29,6 +29,13 @@ export function QuickActions() {
                   {action.label}
                 </Link>
               </MeshButton>
+            ) : action.label === "Reports & Alerts" ? (
+              <MeshButton key={action.label} size="lg" className="w-full justify-start" asChild>
+                <Link to="/reports-alerts">
+                  <action.icon aria-hidden="true" />
+                  {action.label}
+                </Link>
+              </MeshButton>
             ) : action.label === "Scan History" ? (
               <MeshButton key={action.label} size="lg" className="w-full justify-start" asChild>
                 <Link to="/scan-history">
