@@ -12,6 +12,7 @@ import {
   ScanLine,
   Clock3,
   Gauge,
+  FileText,
   type LucideIcon,
 } from "lucide-react";
 
@@ -168,6 +169,7 @@ export const quickActions = [
   { label: "Scan Center", icon: LayoutGrid },
   { label: "Scan History", icon: History },
   { label: "Security Score", icon: Gauge },
+  { label: "Reports & Alerts", icon: FileText },
   { label: "Scan Message", icon: MessageSquareWarning },
   { label: "Check Website", icon: Globe2 },
   { label: "Scan File", icon: FileSearch2 },
