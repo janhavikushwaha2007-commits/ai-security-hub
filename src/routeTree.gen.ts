@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as FakeWebsiteRouteImport } from './routes/fake-website'
 import { Route as PasswordCheckRouteImport } from './routes/password-check'
+import { Route as ReportsAlertsRouteImport } from './routes/reports-alerts'
 import { Route as ScanCenterRouteImport } from './routes/scan-center'
 import { Route as ScanFileRouteImport } from './routes/scan-file'
 import { Route as ScanHistoryRouteImport } from './routes/scan-history'
@@ -40,6 +41,11 @@ const FakeWebsiteRoute = FakeWebsiteRouteImport.update({
 const PasswordCheckRoute = PasswordCheckRouteImport.update({
   id: '/password-check',
   path: '/password-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportsAlertsRoute = ReportsAlertsRouteImport.update({
+  id: '/reports-alerts',
+  path: '/reports-alerts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ScanCenterRoute = ScanCenterRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/fake-website': typeof FakeWebsiteRoute
   '/password-check': typeof PasswordCheckRoute
+  '/reports-alerts': typeof ReportsAlertsRoute
   '/scan-center': typeof ScanCenterRoute
   '/scan-file': typeof ScanFileRoute
   '/scan-history': typeof ScanHistoryRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/fake-website': typeof FakeWebsiteRoute
   '/password-check': typeof PasswordCheckRoute
+  '/reports-alerts': typeof ReportsAlertsRoute
   '/scan-center': typeof ScanCenterRoute
   '/scan-file': typeof ScanFileRoute
   '/scan-history': typeof ScanHistoryRoute
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/fake-website': typeof FakeWebsiteRoute
   '/password-check': typeof PasswordCheckRoute
+  '/reports-alerts': typeof ReportsAlertsRoute
   '/scan-center': typeof ScanCenterRoute
   '/scan-file': typeof ScanFileRoute
   '/scan-history': typeof ScanHistoryRoute
@@ -133,6 +142,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/fake-website'
     | '/password-check'
+    | '/reports-alerts'
     | '/scan-center'
     | '/scan-file'
     | '/scan-history'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/fake-website'
     | '/password-check'
+    | '/reports-alerts'
     | '/scan-center'
     | '/scan-file'
     | '/scan-history'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/fake-website'
     | '/password-check'
+    | '/reports-alerts'
     | '/scan-center'
     | '/scan-file'
     | '/scan-history'
@@ -176,6 +188,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   FakeWebsiteRoute: typeof FakeWebsiteRoute
   PasswordCheckRoute: typeof PasswordCheckRoute
+  ReportsAlertsRoute: typeof ReportsAlertsRoute
   ScanCenterRoute: typeof ScanCenterRoute
   ScanFileRoute: typeof ScanFileRoute
   ScanHistoryRoute: typeof ScanHistoryRoute
@@ -214,6 +227,13 @@ declare module '@tanstack/react-router' {
       path: '/password-check'
       fullPath: '/password-check'
       preLoaderRoute: typeof PasswordCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reports-alerts': {
+      id: '/reports-alerts'
+      path: '/reports-alerts'
+      fullPath: '/reports-alerts'
+      preLoaderRoute: typeof ReportsAlertsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/scan-center': {
@@ -280,6 +300,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   FakeWebsiteRoute: FakeWebsiteRoute,
   PasswordCheckRoute: PasswordCheckRoute,
+  ReportsAlertsRoute: ReportsAlertsRoute,
   ScanCenterRoute: ScanCenterRoute,
   ScanFileRoute: ScanFileRoute,
   ScanHistoryRoute: ScanHistoryRoute,
