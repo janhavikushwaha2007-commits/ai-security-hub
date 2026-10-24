@@ -12,9 +12,9 @@ export const MAX_EMAIL_LENGTH = 255;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export interface AuthFieldErrors {
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
+  email?: string | undefined;
+  password?: string | undefined;
+  confirmPassword?: string | undefined;
 }
 
 export function validateEmail(raw: string): string | undefined {
