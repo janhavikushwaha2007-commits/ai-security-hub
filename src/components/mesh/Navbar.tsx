@@ -52,8 +52,8 @@ export function Navbar() {
         </ul>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <MeshButton variant="ghost" size="sm">
-            Login
+          <MeshButton variant="ghost" size="sm" asChild>
+            <Link to="/auth">Login</Link>
           </MeshButton>
           <MeshButton asChild size="sm">
             <Link to="/dashboard">Get Started</Link>
@@ -86,8 +86,10 @@ export function Navbar() {
               </li>
             ))}
             <li className="mt-3 flex gap-2">
-              <MeshButton variant="outline" size="sm" className="flex-1">
-                Login
+              <MeshButton variant="outline" size="sm" className="flex-1" asChild>
+                <Link to="/auth" onClick={() => setOpen(false)}>
+                  Login
+                </Link>
               </MeshButton>
               <MeshButton asChild size="sm" className="flex-1">
                 <Link to="/dashboard" onClick={() => setOpen(false)}>
