@@ -9,4 +9,4 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- Keep feature-specific Reports & Alerts demo data and UI isolated under `src/components/reports-alerts/`, composed by a thin route, so preview behavior stays separate from other modules.
+- Keep each feature-specific demo module (e.g. Reports & Alerts under `src/components/reports-alerts/`, Profile & Settings under `src/components/profile-settings/`) isolated in its own component folder, composed by a thin route, so preview behavior stays separate from other modules.
