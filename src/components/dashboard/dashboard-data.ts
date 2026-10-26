@@ -13,6 +13,7 @@ import {
   Clock3,
   Gauge,
   FileText,
+  UserRound,
   type LucideIcon,
 } from "lucide-react";
 
@@ -177,4 +178,5 @@ export const quickActions = [
   { label: "Secure Storage", icon: CloudUpload },
   { label: "Scan Screenshot", icon: ImageUp },
   { label: "Check Now", icon: ShieldCheck },
+  { label: "Profile & Settings", icon: UserRound },
 ];
