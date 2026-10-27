@@ -100,6 +100,7 @@ export function QuickActions() {
                 </Link>
               </MeshButton>
             ) : (
+              <MeshButton key={action.label} size="lg" className="w-full justify-start">
                 <action.icon aria-hidden="true" />
                 {action.label}
               </MeshButton>
