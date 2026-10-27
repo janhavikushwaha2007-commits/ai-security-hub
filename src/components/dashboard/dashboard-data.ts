@@ -14,6 +14,7 @@ import {
   Gauge,
   FileText,
   UserRound,
+  Bot,
   type LucideIcon,
 } from "lucide-react";
 
@@ -179,4 +180,5 @@ export const quickActions = [
   { label: "Scan Screenshot", icon: ImageUp },
   { label: "Check Now", icon: ShieldCheck },
   { label: "Profile & Settings", icon: UserRound },
+  { label: "Security Assistant", icon: Bot },
 ];

@@ -9,4 +9,5 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- Keep each feature-specific demo module (e.g. Reports & Alerts under `src/components/reports-alerts/`, Profile & Settings under `src/components/profile-settings/`) isolated in its own component folder, composed by a thin route, so preview behavior stays separate from other modules.
+- Keep each feature-specific demo module (e.g. Reports & Alerts under `src/components/reports-alerts/`, Profile & Settings under `src/components/profile-settings/`, Security Assistant under `src/components/security-assistant/`) isolated in its own component folder, composed by a thin route, so preview behavior stays separate from other modules.
+- The Security Assistant is rule-based only: never simulate AI processing delays or claim a connected AI model; responses come from `assistant-data.ts` keyword rules.
