@@ -1,5 +1,27 @@
 import { ShieldHalf } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import type { FooterLink } from "./landing-data";
 import { footerColumns } from "./landing-data";
+
+function FooterLinkItem({ link }: { link: FooterLink }) {
+  const className =
+    "text-sm text-muted-foreground transition-colors duration-200 hover:text-accent";
+  if (link.to) {
+    return (
+      <Link to={link.to} className={className}>
+        {link.label}
+      </Link>
+    );
+  }
+  if (link.homeAnchor) {
+    return (
+      <Link to="/" hash={link.homeAnchor} className={className}>
+        {link.label}
+      </Link>
+    );
+  }
+  return <span className="text-sm text-muted-foreground/70">{link.label}</span>;
+}
 
 export function Footer() {
   return (
@@ -28,13 +50,8 @@ export function Footer() {
               </h3>
               <ul className="mt-4 space-y-2.5">
                 {column.links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#top"
-                      className="text-sm text-muted-foreground transition-colors duration-200 hover:text-accent"
-                    >
-                      {link}
-                    </a>
+                  <li key={link.label}>
+                    <FooterLinkItem link={link} />
                   </li>
                 ))}
               </ul>
@@ -45,15 +62,9 @@ export function Footer() {
         <div className="mt-12 flex flex-col gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} AI Security Mesh. All rights reserved.</p>
           <div className="flex gap-5">
-            <a href="#top" className="transition-colors hover:text-accent">
-              Privacy
-            </a>
-            <a href="#top" className="transition-colors hover:text-accent">
-              Terms
-            </a>
-            <a href="#top" className="transition-colors hover:text-accent">
-              Contact
-            </a>
+            <span>Privacy</span>
+            <span>Terms</span>
+            <span>Contact</span>
           </div>
         </div>
       </div>
