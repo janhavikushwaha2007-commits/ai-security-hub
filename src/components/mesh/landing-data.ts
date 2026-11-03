@@ -138,9 +138,43 @@ export const navLinks = [
   { label: "About", href: "#about" },
 ];
 
-export const footerColumns = [
-  { title: "Product", links: ["Features", "Security Modules", "How It Works", "Roadmap"] },
-  { title: "Security", links: ["Security Architecture", "Responsible Disclosure", "Status"] },
-  { title: "Resources", links: ["Documentation", "Guides", "Threat Glossary"] },
-  { title: "Company", links: ["About", "Contact", "Privacy", "Terms"] },
+export type FooterLink = {
+  label: string;
+  /** Real in-page section anchor on the homepage (rendered as a link). */
+  homeAnchor?: string;
+  /** Real route within the app (rendered as a link). */
+  to?: string;
+};
+
+export const footerColumns: { title: string; links: FooterLink[] }[] = [
+  {
+    title: "Product",
+    links: [
+      { label: "Features", homeAnchor: "features" },
+      { label: "Security Modules", to: "/scan-center" },
+      { label: "How It Works", homeAnchor: "how-it-works" },
+      { label: "Roadmap" },
+    ],
+  },
+  {
+    title: "Security",
+    links: [
+      { label: "Security Architecture", homeAnchor: "security" },
+      { label: "Responsible Disclosure" },
+      { label: "Status" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [{ label: "Documentation" }, { label: "Guides" }, { label: "Threat Glossary" }],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About", homeAnchor: "about" },
+      { label: "Contact" },
+      { label: "Privacy" },
+      { label: "Terms" },
+    ],
+  },
 ];
