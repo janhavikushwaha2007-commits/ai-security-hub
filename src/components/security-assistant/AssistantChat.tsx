@@ -23,10 +23,16 @@ function welcomeMessage(): AssistantMessage {
 }
 
 export function AssistantChat() {
-  const [messages, setMessages] = useState<AssistantMessage[]>([welcomeMessage()]);
+  // The welcome message carries a time-of-day stamp, so it is seeded after
+  // mount to keep server and client HTML identical (avoids hydration mismatch).
+  const [messages, setMessages] = useState<AssistantMessage[]>([]);
   const [input, setInput] = useState("");
   const [inputError, setInputError] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMessages([welcomeMessage()]);
+  }, []);
 
   useEffect(() => {
     const node = listRef.current;
