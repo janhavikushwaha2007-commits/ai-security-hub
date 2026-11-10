@@ -50,6 +50,8 @@ class Settings(BaseSettings):
         parsed = urlparse(value)
         if parsed.scheme not in {"http", "https"} or not parsed.netloc:
             raise ValueError("must be an absolute HTTP(S) origin")
+        if parsed.username or parsed.password:
+            raise ValueError("must not contain credentials")
         if parsed.path not in {"", "/"} or parsed.query or parsed.fragment:
             raise ValueError("must not include a path, query, or fragment")
         return value.rstrip("/")
@@ -69,6 +71,8 @@ class Settings(BaseSettings):
             parsed = urlparse(value)
             if parsed.scheme not in {"http", "https"} or not parsed.netloc:
                 raise ValueError("each CORS origin must be an absolute HTTP(S) origin")
+            if parsed.username or parsed.password:
+                raise ValueError("CORS origins must not contain credentials")
             if parsed.path not in {"", "/"} or parsed.query or parsed.fragment:
                 raise ValueError("CORS entries must be origins without paths or query strings")
             origins.append(value.rstrip("/"))

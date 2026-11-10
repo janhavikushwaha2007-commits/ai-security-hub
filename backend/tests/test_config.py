@@ -37,7 +37,9 @@ def test_settings_parse_environment_values(monkeypatch: pytest.MonkeyPatch) -> N
         {"mongodb_database": "bad/name"},
         {"mongodb_server_selection_timeout_ms": 10},
         {"api_public_origin": "not-an-origin"},
+        {"api_public_origin": "https://user:pass@example.com"},
         {"cors_origins": ["*"]},
+        {"cors_origins": ["https://user:pass@example.com"]},
     ],
 )
 def test_settings_reject_invalid_values(overrides: dict[str, object]) -> None:
