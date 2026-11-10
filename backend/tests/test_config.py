@@ -20,6 +20,16 @@ def test_settings_accept_mongodb_atlas_uri_and_parse_cors_list() -> None:
     ]
 
 
+def test_settings_parse_environment_values(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("MONGODB_URI", "mongodb://localhost:27017")
+    monkeypatch.setenv("MONGODB_DATABASE", "mesh_test")
+    monkeypatch.setenv("CORS_ORIGINS", "https://app.example,https://preview.example")
+
+    settings = Settings(_env_file=None)
+
+    assert settings.cors_origins == ["https://app.example", "https://preview.example"]
+
+
 @pytest.mark.parametrize(
     "overrides",
     [

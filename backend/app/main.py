@@ -4,8 +4,7 @@ from contextlib import asynccontextmanager
 from uuid import uuid4
 
 from fastapi import FastAPI, Request
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 
 from app.api.v1.router import router as v1_router
 from app.core.config import Settings, get_settings
@@ -36,19 +35,33 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         lifespan=lifespan,
     )
 
-    if settings is not None:
-        application.add_middleware(
-            CORSMiddleware,
-            allow_origins=settings.cors_origins,
-            allow_credentials=False,
-            allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
-            allow_headers=["Authorization", "Content-Type", "X-Request-ID"],
-        )
-
     @application.middleware("http")
     async def attach_request_id(request: Request, call_next):
         request.state.request_id = request.headers.get("X-Request-ID") or str(uuid4())
-        response = await call_next(request)
+
+        resolved_settings: Settings | None = getattr(request.app.state, "settings", None)
+        origin = request.headers.get("origin")
+        allowed_origin = (
+            origin
+            if resolved_settings is not None and origin in resolved_settings.cors_origins
+            else None
+        )
+
+        if request.method == "OPTIONS" and allowed_origin:
+            response = Response(status_code=200)
+            response.headers["Access-Control-Allow-Methods"] = (
+                "GET, POST, PATCH, DELETE, OPTIONS"
+            )
+            response.headers["Access-Control-Allow-Headers"] = (
+                "Authorization, Content-Type, X-Request-ID"
+            )
+            response.headers["Access-Control-Max-Age"] = "600"
+        else:
+            response = await call_next(request)
+
+        if allowed_origin:
+            response.headers["Access-Control-Allow-Origin"] = allowed_origin
+            response.headers["Vary"] = "Origin"
         response.headers["X-Request-ID"] = request.state.request_id
         return response
 

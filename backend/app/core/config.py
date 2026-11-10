@@ -1,11 +1,11 @@
 """Environment-backed settings for the external API service."""
 
 from functools import lru_cache
-from typing import Literal
+from typing import Annotated, Literal
 from urllib.parse import urlparse
 
 from pydantic import Field, field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -23,7 +23,9 @@ class Settings(BaseSettings):
     mongodb_database: str = Field(min_length=1)
     mongodb_server_selection_timeout_ms: int = Field(default=3000, ge=100, le=60000)
     api_public_origin: str = "http://localhost:8000"
-    cors_origins: list[str] = Field(default_factory=lambda: ["http://localhost:8080"])
+    cors_origins: Annotated[list[str], NoDecode] = Field(
+        default_factory=lambda: ["http://localhost:8080"]
+    )
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"
 
     @field_validator("mongodb_uri")
