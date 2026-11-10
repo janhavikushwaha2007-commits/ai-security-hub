@@ -56,3 +56,17 @@ def test_openapi_is_available_without_scanner_apis(client: TestClient) -> None:
     schema = response.json()
     assert "/health" in schema["paths"]
     assert "/v1/scans/message" not in schema["paths"]
+
+
+def test_swagger_documentation_is_available(client: TestClient) -> None:
+    response = client.get("/docs")
+
+    assert response.status_code == 200
+    assert "swagger-ui" in response.text.lower()
+
+
+def test_mongo_database_is_configured_without_network_connection(settings) -> None:
+    application = __import__("app.main", fromlist=["create_app"]).create_app(settings)
+
+    with TestClient(application):
+        assert application.state.mongo_database.name == "mesh_test"

@@ -20,6 +20,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         resolved_settings = settings or get_settings()
         application.state.settings = resolved_settings
         application.state.mongo_client = create_mongo_client(resolved_settings)
+        application.state.mongo_database = application.state.mongo_client[
+            resolved_settings.mongodb_database
+        ]
         try:
             yield
         finally:
