@@ -2,6 +2,8 @@
 
 from fastapi.testclient import TestClient
 
+from app.main import create_app
+
 
 def test_health_returns_liveness_only(client: TestClient) -> None:
     response = client.get("/health")
@@ -66,7 +68,7 @@ def test_swagger_documentation_is_available(client: TestClient) -> None:
 
 
 def test_mongo_database_is_configured_without_network_connection(settings) -> None:
-    application = __import__("app.main", fromlist=["create_app"]).create_app(settings)
+    application = create_app(settings)
 
     with TestClient(application):
         assert application.state.mongo_database.name == "mesh_test"
