@@ -27,6 +27,9 @@ class Settings(BaseSettings):
         default_factory=lambda: ["http://localhost:8080"]
     )
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"
+    jwt_secret: str = Field(min_length=16, repr=False)
+    jwt_algorithm: str = "HS256"
+    jwt_expire_minutes: int = Field(default=10080, ge=1, le=43200)  # 7 days default
 
     @field_validator("mongodb_uri")
     @classmethod

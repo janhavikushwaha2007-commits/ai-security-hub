@@ -4,10 +4,11 @@ import { ScanUrlHeader } from "@/components/scan-url/ScanUrlHeader";
 import { ScanUrlForm } from "@/components/scan-url/ScanUrlForm";
 import { ScanUrlResult } from "@/components/scan-url/ScanUrlResult";
 import { ScanUrlEmpty } from "@/components/scan-url/ScanUrlEmpty";
+import { ApiError, scanUrl, type ScanResult } from "@/lib/api";
 
 const title = "Scan URL — AI Security Mesh";
 const description =
-  "Preview the AI Security Mesh URL scanner. Paste a suspicious link to see a simulated frontend analysis with risk signals and recommendations.";
+  "Scan a suspicious link for phishing signals. AI Security Mesh checks for lookalike domains, suspicious paths, protocol issues, and common scam patterns.";
 
 export const Route = createFileRoute("/scan-url")({
   head: () => ({
@@ -25,18 +26,25 @@ export const Route = createFileRoute("/scan-url")({
 
 function ScanUrlPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [hasResult, setHasResult] = useState(false);
+  const [result, setResult] = useState<ScanResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async (url: string) => {
     setIsAnalyzing(true);
-    window.setTimeout(() => {
+    setError(null);
+    try {
+      const res = await scanUrl(url);
+      setResult(res.data);
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Unable to analyze the URL. Please try again.");
+    } finally {
       setIsAnalyzing(false);
-      setHasResult(true);
-    }, 1200);
+    }
   };
 
   const handleClear = () => {
-    setHasResult(false);
+    setResult(null);
+    setError(null);
     setIsAnalyzing(false);
   };
 
@@ -52,8 +60,9 @@ function ScanUrlPage() {
           <div>
             <h1 className="text-3xl font-semibold sm:text-4xl">Phishing URL Detection</h1>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-              This is a frontend preview. Paste or type a suspicious link below to see a simulated
-              demo analysis — no real detection service is connected yet.
+              Paste or type a suspicious link below to run a real security analysis. Our scanner
+              checks for lookalike domains, suspicious paths, protocol issues, and common phishing
+              patterns.
             </p>
           </div>
 
@@ -61,10 +70,18 @@ function ScanUrlPage() {
             onAnalyze={handleAnalyze}
             onClear={handleClear}
             isAnalyzing={isAnalyzing}
-            hasResult={hasResult}
+            hasResult={result !== null}
           />
 
-          {hasResult ? <ScanUrlResult /> : <ScanUrlEmpty />}
+          {error ? (
+            <p role="alert" className="surface-card border-destructive/50 p-5 text-sm text-destructive">
+              {error}
+            </p>
+          ) : result ? (
+            <ScanUrlResult result={result} />
+          ) : (
+            <ScanUrlEmpty />
+          )}
         </div>
       </main>
     </div>

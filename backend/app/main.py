@@ -7,10 +7,11 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response
 
 from app.api.v1.router import router as v1_router
+from app.auth import router as auth_router
 from app.core.config import Settings, get_settings
 from app.core.errors import install_error_handlers
 from app.db.mongo import create_mongo_client
-from app.scanner import router as scan_router  # NEW
+from app.scanner import router as scan_router
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -31,8 +32,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     application = FastAPI(
         title="AI SECURITY MESH API",
-        description="External API foundation. Scanner and authentication APIs are not implemented.",
-        version="0.1.0",
+        description="Authentication and security scanner APIs with MongoDB persistence.",
+        version="0.2.0",
         docs_url="/docs",
         redoc_url="/redoc",
         openapi_url="/openapi.json",
@@ -75,7 +76,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         return JSONResponse(content={"data": {"status": "ok"}})
 
     application.include_router(v1_router)
-    application.include_router(scan_router)  # NEW
+    application.include_router(auth_router)
+    application.include_router(scan_router)
     install_error_handlers(application)
     return application
 

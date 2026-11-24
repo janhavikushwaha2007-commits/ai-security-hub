@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   AlertCircle,
@@ -11,10 +11,11 @@ import {
   Lock,
   ShieldCheck,
   UserPlus,
-  Info,
+  User,
 } from "lucide-react";
 import { MeshButton } from "@/components/mesh/MeshButton";
 import { cn } from "@/lib/utils";
+import { ApiError, login, register, setAuthToken } from "@/lib/api";
 import {
   hasNoErrors,
   modeMeta,
@@ -23,10 +24,9 @@ import {
   type AuthMode,
 } from "./auth-data";
 
-const SIMULATED_DELAY_MS = 1100;
-
 export function AuthCard() {
   const [mode, setMode] = useState<AuthMode>("login");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -35,44 +35,52 @@ export function AuthCard() {
   const [errors, setErrors] = useState<AuthFieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-  const timerRef = useRef<number | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const meta = modeMeta[mode];
 
   const switchMode = (next: AuthMode) => {
     if (next === mode) return;
-    // Never carry passwords across modes.
     setPassword("");
     setConfirmPassword("");
     setShowPassword(false);
     setShowConfirm(false);
     setErrors({});
+    setApiError(null);
     setMode(next);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (submitting) return;
+    setApiError(null);
     const nextErrors = validateAuthForm(mode, email, password, confirmPassword);
     setErrors(nextErrors);
     if (!hasNoErrors(nextErrors)) return;
     setSubmitting(true);
-    // Simulated preview only: this delay stands in for a future real
-    // authentication call. No credentials leave this component, no network
-    // request is made, and nothing is stored or logged.
-    timerRef.current = window.setTimeout(() => {
+    try {
+      if (mode === "register") {
+        const res = await register(name.trim(), email.trim(), password);
+        setAuthToken(res.token);
+      } else {
+        const res = await login(email.trim(), password);
+        setAuthToken(res.token);
+      }
       setSubmitting(false);
       setSuccess(true);
-    }, SIMULATED_DELAY_MS);
+    } catch (err) {
+      setSubmitting(false);
+      setApiError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
+    }
   };
 
   const resetDemo = () => {
-    if (timerRef.current) window.clearTimeout(timerRef.current);
     setPassword("");
     setConfirmPassword("");
     setShowPassword(false);
     setShowConfirm(false);
     setErrors({});
+    setApiError(null);
     setSubmitting(false);
     setSuccess(false);
   };
@@ -93,33 +101,29 @@ export function AuthCard() {
             <ShieldCheck className="size-7 text-primary-foreground" aria-hidden="true" />
           </span>
           <div>
-            <span className="inline-flex items-center rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
-              Demo only
+            <span className="inline-flex items-center rounded-full border border-accent/40 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent">
+              Success
             </span>
             <h2 id="auth-success-heading" className="mt-3 text-xl font-semibold sm:text-2xl">
-              Simulated success — {meta.submitLabel.toLowerCase()} form validated
+              {mode === "register" ? "Account created" : "Signed in"}
             </h2>
             <p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
-              This preview stops here. No account was created, nobody is signed in, and your email
-              and password were not sent anywhere, stored, or logged. Real authentication will be
-              connected during the backend phase.
+              {mode === "register"
+                ? "Your account is ready and you are now signed in. Your scan history will be saved to your account."
+                : "Welcome back! You are now signed in and your scan history is available."}
             </p>
           </div>
           <div className="mt-2 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <MeshButton asChild className="w-full sm:w-auto">
               <Link to="/dashboard">
-                Open Dashboard (Demo Navigation)
+                Open Dashboard
                 <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
             </MeshButton>
             <MeshButton variant="outline" onClick={resetDemo} className="w-full sm:w-auto">
-              Try Again
+              Switch Account
             </MeshButton>
           </div>
-          <p className="text-xs text-muted-foreground">
-            The Dashboard link above is a demo navigation option only — it does not imply you are
-            authenticated.
-          </p>
         </div>
       </section>
     );
@@ -168,6 +172,32 @@ export function AuthCard() {
       </div>
 
       <form onSubmit={handleSubmit} noValidate className="mt-6 space-y-5">
+        {/* Name — Register only */}
+        {mode === "register" ? (
+          <div>
+            <label htmlFor="auth-name" className="mb-1.5 block text-sm font-medium">
+              Full name
+            </label>
+            <div className="relative">
+              <span
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
+                aria-hidden="true"
+              >
+                <User className="size-4" />
+              </span>
+              <input
+                id="auth-name"
+                type="text"
+                autoComplete="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Your name"
+                className={fieldClasses(false)}
+              />
+            </div>
+          </div>
+        ) : null}
+
         {/* Email */}
         <div>
           <label htmlFor="auth-email" className="mb-1.5 block text-sm font-medium">
@@ -332,14 +362,15 @@ export function AuthCard() {
           )}
         </MeshButton>
 
-        <p className="flex items-start gap-2 rounded-xl border border-border bg-surface/40 p-3 text-xs leading-relaxed text-muted-foreground">
-          <Info className="mt-0.5 size-3.5 shrink-0 text-accent" aria-hidden="true" />
-          <span>
-            Frontend preview only. Submitting this form does not create an account, sign you in, or
-            send any data — your password is never stored or logged. Real authentication will be
-            connected during the backend phase.
-          </span>
-        </p>
+        {apiError ? (
+          <p
+            role="alert"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-xs text-destructive"
+          >
+            <AlertCircle className="size-3.5 shrink-0" aria-hidden="true" />
+            {apiError}
+          </p>
+        ) : null}
 
         <p className="text-center text-sm text-muted-foreground">
           {mode === "login" ? "Don't have an account?" : "Already have an account?"}{" "}

@@ -1,21 +1,35 @@
 import { Reveal } from "@/components/mesh/Reveal";
-import { demoResult, riskMeta, type DemoResult } from "./scan-message-data";
+import { riskMeta, type DemoResult } from "./scan-message-data";
 import { AlertTriangle, CheckCircle2, Info, ShieldAlert, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { ScanResult } from "@/lib/api";
 
 interface ScanMessageResultProps {
-  result?: DemoResult;
+  result: ScanResult;
 }
 
-const levelIcon: Record<DemoResult["riskLevel"], typeof AlertTriangle> = {
+type RiskLevel = DemoResult["riskLevel"];
+
+const levelIcon: Record<RiskLevel, typeof AlertTriangle> = {
   Safe: ShieldCheck,
   Suspicious: AlertTriangle,
   "High Risk": ShieldAlert,
 };
 
-export function ScanMessageResult({ result = demoResult }: ScanMessageResultProps) {
-  const meta = riskMeta[result.riskLevel];
-  const LevelIcon = levelIcon[result.riskLevel];
+function mapRiskLevel(level: string): RiskLevel {
+  if (level === "Safe") return "Safe";
+  if (level === "Suspicious") return "Suspicious";
+  return "High Risk";
+}
+
+export function ScanMessageResult({ result }: ScanMessageResultProps) {
+  const riskLevel = mapRiskLevel(result.risk_level);
+  const meta = riskMeta[riskLevel];
+  const LevelIcon = levelIcon[riskLevel];
+  const signals = result.reasons.map((reason, i) => ({
+    label: `Signal ${i + 1}`,
+    description: reason,
+  }));
 
   return (
     <Reveal>
@@ -34,11 +48,9 @@ export function ScanMessageResult({ result = demoResult }: ScanMessageResultProp
               </span>
               <div>
                 <h2 id="result-heading" className="text-lg font-semibold sm:text-xl">
-                  Demo Result
+                  Analysis Result
                 </h2>
-                <p className="text-xs text-muted-foreground">
-                  Simulated output for frontend preview
-                </p>
+                <p className="text-xs text-muted-foreground">{result.mode}</p>
               </div>
             </div>
             <span
@@ -50,7 +62,7 @@ export function ScanMessageResult({ result = demoResult }: ScanMessageResultProp
               )}
             >
               <span className={cn("size-2 rounded-full", meta.dot)} />
-              {result.riskLevel}
+              {riskLevel}
             </span>
           </div>
 
@@ -79,13 +91,13 @@ export function ScanMessageResult({ result = demoResult }: ScanMessageResultProp
                       stroke="currentColor"
                       strokeWidth="8"
                       strokeLinecap="round"
-                      strokeDasharray={`${(result.riskScore / 100) * 264} 264`}
+                      strokeDasharray={`${(result.risk_score / 100) * 264} 264`}
                       className={cn("transition-all duration-700", meta.text)}
                     />
                   </svg>
                   <div className="relative">
                     <span className={cn("font-display text-4xl font-bold", meta.text)}>
-                      {result.riskScore}
+                      {result.risk_score}
                     </span>
                     <span className="block text-xs text-muted-foreground">/ 100</span>
                   </div>
@@ -99,7 +111,11 @@ export function ScanMessageResult({ result = demoResult }: ScanMessageResultProp
                   What this means
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {result.explanation}
+                  {riskLevel === "High Risk"
+                    ? "This message shows several scam patterns. Do not click any links or share personal information."
+                    : riskLevel === "Suspicious"
+                      ? "This message has some warning signs. Verify through an official channel before taking action."
+                      : "No significant scam patterns detected, but always be cautious with unexpected messages."}
                 </p>
               </div>
             </div>
@@ -108,7 +124,7 @@ export function ScanMessageResult({ result = demoResult }: ScanMessageResultProp
               <div>
                 <h3 className="text-sm font-semibold text-foreground">Detected warning signals</h3>
                 <ul className="mt-4 grid gap-3">
-                  {result.signals.map((signal, i) => (
+                  {signals.map((signal, i) => (
                     <li
                       key={i}
                       className="flex items-start gap-3 rounded-xl border border-border bg-surface/60 p-4 shadow-[var(--shadow-soft)]"
@@ -133,7 +149,11 @@ export function ScanMessageResult({ result = demoResult }: ScanMessageResultProp
                   Recommended action
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-accent-foreground/90">
-                  {result.recommendation}
+                  {riskLevel === "High Risk"
+                    ? "Do not click any links or make payments. Contact the organisation directly through its official website or app, then delete the message."
+                    : riskLevel === "Suspicious"
+                      ? "Do not click links or share details. Verify with the sender through an official channel before acting."
+                      : "No action needed, but remain cautious with any unexpected messages asking for personal information."}
                 </p>
               </div>
             </div>

@@ -71,14 +71,14 @@ export const modeMeta: Record<
   login: {
     heading: "Welcome back",
     subheading:
-      "Sign in to preview your security dashboard. This is a frontend preview — real authentication is not connected yet.",
+      "Sign in to your security dashboard and scan history.",
     submitLabel: "Sign In",
     loadingLabel: "Signing in...",
   },
   register: {
     heading: "Create your account",
     subheading:
-      "Preview the registration flow. This is a frontend preview — no account is created.",
+      "Sign up to start scanning links, messages, and files. Your password is hashed and never stored in plain text.",
     submitLabel: "Create Account",
     loadingLabel: "Creating account...",
   },

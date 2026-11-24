@@ -1,21 +1,35 @@
 import { Reveal } from "@/components/mesh/Reveal";
-import { demoUrlResult, riskMeta, type DemoUrlResult } from "./scan-url-data";
+import { riskMeta, type DemoUrlResult } from "./scan-url-data";
 import { AlertTriangle, CheckCircle2, Globe2, Info, ShieldAlert, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { ScanResult } from "@/lib/api";
 
 interface ScanUrlResultProps {
-  result?: DemoUrlResult;
+  result: ScanResult;
 }
 
-const levelIcon: Record<DemoUrlResult["riskLevel"], typeof AlertTriangle> = {
+type RiskLevel = DemoUrlResult["riskLevel"];
+
+const levelIcon: Record<RiskLevel, typeof AlertTriangle> = {
   Safe: ShieldCheck,
   Suspicious: AlertTriangle,
   "High Risk": ShieldAlert,
 };
 
-export function ScanUrlResult({ result = demoUrlResult }: ScanUrlResultProps) {
-  const meta = riskMeta[result.riskLevel];
-  const LevelIcon = levelIcon[result.riskLevel];
+function mapRiskLevel(level: string): RiskLevel {
+  if (level === "Safe") return "Safe";
+  if (level === "Suspicious") return "Suspicious";
+  return "High Risk";
+}
+
+export function ScanUrlResult({ result }: ScanUrlResultProps) {
+  const riskLevel = mapRiskLevel(result.risk_level);
+  const meta = riskMeta[riskLevel];
+  const LevelIcon = levelIcon[riskLevel];
+  const signals = result.reasons.map((reason, i) => ({
+    label: `Signal ${i + 1}`,
+    description: reason,
+  }));
 
   return (
     <Reveal>
@@ -34,11 +48,9 @@ export function ScanUrlResult({ result = demoUrlResult }: ScanUrlResultProps) {
               </span>
               <div>
                 <h2 id="url-result-heading" className="text-lg font-semibold sm:text-xl">
-                  Demo Result
+                  Analysis Result
                 </h2>
-                <p className="text-xs text-muted-foreground">
-                  Simulated output for frontend preview
-                </p>
+                <p className="text-xs text-muted-foreground">{result.mode}</p>
               </div>
             </div>
             <span
@@ -50,7 +62,7 @@ export function ScanUrlResult({ result = demoUrlResult }: ScanUrlResultProps) {
               )}
             >
               <span className={cn("size-2 rounded-full", meta.dot)} />
-              {result.riskLevel}
+              {riskLevel}
             </span>
           </div>
 
@@ -79,13 +91,13 @@ export function ScanUrlResult({ result = demoUrlResult }: ScanUrlResultProps) {
                       stroke="currentColor"
                       strokeWidth="8"
                       strokeLinecap="round"
-                      strokeDasharray={`${(result.riskScore / 100) * 264} 264`}
+                      strokeDasharray={`${(result.risk_score / 100) * 264} 264`}
                       className={cn("transition-all duration-700", meta.text)}
                     />
                   </svg>
                   <div className="relative">
                     <span className={cn("font-display text-4xl font-bold", meta.text)}>
-                      {result.riskScore}
+                      {result.risk_score}
                     </span>
                     <span className="block text-xs text-muted-foreground">/ 100</span>
                   </div>
@@ -99,7 +111,11 @@ export function ScanUrlResult({ result = demoUrlResult }: ScanUrlResultProps) {
                   What this means
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {result.explanation}
+                  {riskLevel === "High Risk"
+                    ? "This URL shows multiple phishing indicators. Do not enter any personal information."
+                    : riskLevel === "Suspicious"
+                      ? "This URL has some warning signs. Proceed with caution and verify the destination."
+                      : "No significant phishing patterns detected, but always verify the address before entering credentials."}
                 </p>
               </div>
             </div>
@@ -108,7 +124,7 @@ export function ScanUrlResult({ result = demoUrlResult }: ScanUrlResultProps) {
               <div>
                 <h3 className="text-sm font-semibold text-foreground">URL analysis signals</h3>
                 <ul className="mt-4 grid gap-3">
-                  {result.signals.map((signal, i) => (
+                  {signals.map((signal, i) => (
                     <li
                       key={i}
                       className="flex items-start gap-3 rounded-xl border border-border bg-surface/60 p-4 shadow-[var(--shadow-soft)]"
@@ -133,7 +149,11 @@ export function ScanUrlResult({ result = demoUrlResult }: ScanUrlResultProps) {
                   Recommended action
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-accent-foreground/90">
-                  {result.recommendation}
+                  {riskLevel === "High Risk"
+                    ? "Do not enter any credentials or personal information. Navigate to the official website directly by typing its known address. Report the link and delete the message."
+                    : riskLevel === "Suspicious"
+                      ? "Verify the destination before clicking. If you received this link in a message, contact the sender through an official channel."
+                      : "No action needed, but always confirm the address matches the organisation you expect before signing in."}
                 </p>
               </div>
             </div>

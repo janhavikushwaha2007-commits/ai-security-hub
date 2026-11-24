@@ -4,10 +4,11 @@ import { ScanMessageHeader } from "@/components/scan-message/ScanMessageHeader";
 import { ScanMessageForm } from "@/components/scan-message/ScanMessageForm";
 import { ScanMessageResult } from "@/components/scan-message/ScanMessageResult";
 import { ScanMessageEmpty } from "@/components/scan-message/ScanMessageEmpty";
+import { ApiError, scanMessage, type ScanResult } from "@/lib/api";
 
 const title = "Scan Message — AI Security Mesh";
 const description =
-  "Preview the AI Security Mesh scam message scanner. Paste a suspicious message to see a simulated frontend analysis with risk signals and recommendations.";
+  "Scan a suspicious SMS, email, or chat message for scam patterns. AI Security Mesh checks for urgency cues, credential requests, and common fraud language.";
 
 export const Route = createFileRoute("/scan-message")({
   head: () => ({
@@ -25,18 +26,25 @@ export const Route = createFileRoute("/scan-message")({
 
 function ScanMessagePage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [hasResult, setHasResult] = useState(false);
+  const [result, setResult] = useState<ScanResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async (message: string) => {
     setIsAnalyzing(true);
-    window.setTimeout(() => {
+    setError(null);
+    try {
+      const res = await scanMessage(message);
+      setResult(res.data);
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Unable to analyze the message. Please try again.");
+    } finally {
       setIsAnalyzing(false);
-      setHasResult(true);
-    }, 1200);
+    }
   };
 
   const handleClear = () => {
-    setHasResult(false);
+    setResult(null);
+    setError(null);
     setIsAnalyzing(false);
   };
 
@@ -52,8 +60,9 @@ function ScanMessagePage() {
           <div>
             <h1 className="text-3xl font-semibold sm:text-4xl">Scam Message Detection</h1>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-              This is a frontend preview. Paste or type a suspicious message below to see a
-              simulated demo analysis — no real detection service is connected yet.
+              Paste or type a suspicious message below to run a real security analysis. Our scanner
+              checks for manipulation patterns, urgency cues, suspicious links, and common scam
+              language.
             </p>
           </div>
 
@@ -61,10 +70,18 @@ function ScanMessagePage() {
             onAnalyze={handleAnalyze}
             onClear={handleClear}
             isAnalyzing={isAnalyzing}
-            hasResult={hasResult}
+            hasResult={result !== null}
           />
 
-          {hasResult ? <ScanMessageResult /> : <ScanMessageEmpty />}
+          {error ? (
+            <p role="alert" className="surface-card border-destructive/50 p-5 text-sm text-destructive">
+              {error}
+            </p>
+          ) : result ? (
+            <ScanMessageResult result={result} />
+          ) : (
+            <ScanMessageEmpty />
+          )}
         </div>
       </main>
     </div>
